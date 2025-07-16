@@ -1,4 +1,4 @@
-import { Client, Account, ID, Databases, Storage } from appwrite;
+import { Client, Account, ID, Databases, Storage } from 'appwrite';
 
 export class CrudService {
     client = new Client();

@@ -1,4 +1,4 @@
-import { Client, Account, ID } from appwrite;
+import { Client, Account, ID } from 'appwrite';
 
 export class AuthService {
 
@@ -19,7 +19,7 @@ export class AuthService {
     }
 
     // This is a function that is used to create a new account in the Appwrite Server. It takes an ID given by appwrite (unique), email, password, and name as parameters. It returns a promise if the account is created successfully. If the account is not created successfully, it will return null.
-    async createAccount(ID, email, password, name) {
+    async createAccount(email, password, name) {
         try {
             return await this.account.create(ID.unique(), email, password, name)
         } catch (error) {
