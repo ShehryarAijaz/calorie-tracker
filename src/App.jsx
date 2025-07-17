@@ -19,6 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/add-food" element={<CalorieTrack />} />
           <Route path="/account" element={<Profile />} />
+          {/* <Route path="/progress" element={<Progress />} /> */}
         </Routes>
       </div>
     </>

@@ -4,21 +4,25 @@ import authService from '../../backend/appwrite/service/auth.service'
 
 function Navbar() {
 
-    const navigate = useNavigate();
-    const [loggedIn, setLoggedIn] = useState(null);
+  const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState(false);
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            const user = await authService.getCurrentUser();
-            setLoggedIn(user);
-        }
-        fetchUser();
-    }, []);
+  useEffect(() => {
+      const fetchUser = async () => {
+          const user = await authService.getCurrentUser();
+          if (user) {
+            setLoggedIn(true);
+          } else {
+            setLoggedIn(false);
+          }
+      }
+      fetchUser();
+  });
 
-    const handleLogout = () => {
-        authService.logout();
-        navigate("/login");
-    }
+  const handleLogout = () => {
+      authService.logout();
+      navigate("/login");
+  }
 
   return (
     <nav className="bg-white shadow-md px-6 py-3 flex items-center justify-between w-full sticky top-0 z-50">
@@ -69,12 +73,22 @@ function Navbar() {
           Logout
         </button>
         )}
+        {!loggedIn && (
         <button
           className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded transition"
           onClick={() => navigate('/login')}
         >
           Login
         </button>
+        )}
+        {!loggedIn && (
+          <button
+            className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded transition"
+            onClick={() => navigate('/signup')}
+          >
+            Signup
+          </button>
+        )}
       </div>
     </nav>
   )

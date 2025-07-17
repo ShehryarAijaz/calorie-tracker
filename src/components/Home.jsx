@@ -1,28 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authService from "../../backend/appwrite/service/auth.service";
 import { useEffect } from "react";
 
 function Home() {
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await authService.getCurrentUser();
+      if (user) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    }
+    fetchUser();
+  })
+
   const navigate = useNavigate();
 
   const handleAddFood = () => {
-    navigate("/add-food");
+    if (loggedIn) {
+      navigate("/add-food");
+    } else {
+      navigate("/login");
+    }
   };
 
   const handleViewProgress = () => {
-    navigate("/progress");
-  };
-
-  const handleLogout = () => {
-    authService.logout();
+    if (loggedIn) {
+      navigate("/progress");
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-2xl">
         <h1 className="text-4xl font-bold mb-4 text-center text-blue-700">
-          Welcome to Calorie Tracker
+          {loggedIn ? "Welcome to Calorie Tracker" : "Please login to continue"}
         </h1>
         <p className="text-lg text-gray-600 mb-6 text-center">
           Track your daily nutrition, manage your meals, and reach your health

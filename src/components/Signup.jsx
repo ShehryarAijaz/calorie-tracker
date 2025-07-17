@@ -39,37 +39,46 @@ export default function Signup() {
     }
 
     return (
-    <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-4xl font-bold">Signup</h1>
-        <p className="text-gray-500">Please fill the form below to create an account</p>
-        <form onSubmit={handleSignup} className="flex flex-col gap-4">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+        <div className="bg-white rounded shadow p-8 w-full max-w-sm">
+          <h1 className="text-3xl font-bold mb-2 text-center">Signup</h1>
+          <p className="text-gray-500 mb-6 text-center">Please fill the form below to create an account</p>
+          <form onSubmit={handleSignup} className="flex flex-col gap-3">
             <input
-            type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="border rounded px-3 py-2 focus:outline-none"
             />
             <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="border rounded px-3 py-2 focus:outline-none"
             />
             <input
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border rounded px-3 py-2 focus:outline-none"
             />
-            <p className="text-red-500">{error}</p>
-            <p className="text-blue-500">
-                Already have an account? <Link to="/login">Login</Link>
-            </p>
-            <button disabled={isLoading} type="submit">
-                {isLoading ? "Signing up..." : "Signup"}
+            <button
+              disabled={isLoading}
+              type="submit"
+              className="bg-blue-600 text-white rounded py-2 mt-2 hover:bg-blue-700 transition"
+            >
+              {isLoading ? "Signing up..." : "Signup"}
             </button>
-        </form>
-    </div>
-  )
+            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+            <p className="text-blue-500 text-sm mt-2 text-center">
+              Already have an account? <Link to="/login" className="underline">Login</Link>
+            </p>
+          </form>
+        </div>
+      </div>
+    )
 }
 
