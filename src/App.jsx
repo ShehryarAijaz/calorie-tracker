@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
 import CalorieTrack from "./components/CalorieTrack";
+import TalkToAI from "./components/TalkToAI";
 import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/add-food" element={<CalorieTrack foods={foods} setFoods={setFoods} />} />
           <Route path="/account" element={<Profile />} />
+          <Route path="/ai-companion" element={<TalkToAI />} />
           {/* <Route path="/progress" element={<Progress />} /> */}
         </Routes>
       </div>

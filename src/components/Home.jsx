@@ -1,32 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import authService from "../../backend/appwrite/service/auth.service";
-import { useEffect } from "react";
+import { useAuth } from "../context/AuthContext.jsx";
 
 function Home() {
-
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = await authService.getCurrentUser();
-      if (user) {
-        setLoggedIn(true);
-      } else {
-        setLoggedIn(false);
-      }
-    }
-    fetchUser();
-  })
-
+  const { user } = useAuth();
+  const loggedIn = !!user;
   const navigate = useNavigate();
 
   const handleAddFood = () => {
-    if (loggedIn) {
-      navigate("/add-food");
-    } else {
-      navigate("/login");
-    }
+    navigate("/add-food");
   };
 
   const handleViewProgress = () => {
@@ -36,6 +18,14 @@ function Home() {
       navigate("/login");
     }
   };
+
+  const handleAICompanion = () => {
+    if (loggedIn) {
+      navigate("/ai-companion")
+    } else {
+      navigate("/login")
+    }
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
@@ -77,6 +67,23 @@ function Home() {
             >
               View Progress
             </button>
+          </div>
+          <div className="md:col-span-2 w-full">
+            <div className="bg-orange-50 rounded-lg p-6 flex flex-col items-center">
+              <h2 className="text-2xl font-semibold mb-2 text-orange-600">
+                AI Companion
+              </h2>
+              <p className="text-gray-500 text-center mb-4">
+                Get personalized nutrition advice and track your progress with
+                AI.
+              </p>
+              <button
+                className="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 transition"
+                onClick={handleAICompanion}
+              >
+                Talk to AI
+              </button>
+            </div>
           </div>
         </div>
       </div>
