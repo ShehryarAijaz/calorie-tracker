@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import authService from '../../backend/appwrite/service/auth.service.js'
 import { useNavigate, Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext.jsx'
 
 export default function Signup() {
     const [name, setName] = useState("")
@@ -9,8 +10,10 @@ export default function Signup() {
     const [password, setPassword] = useState("")
     const [error, setError] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [loggedIn, setLoggedIn] = useState(false)
     const navigate = useNavigate();
-
+    const { login } = useAuth();
+    
     const handleSignup = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -25,9 +28,9 @@ export default function Signup() {
         try {
             const response = await authService.createAccount(email, password, name);
             if (response) {
-                const currentUser = await authService.getCurrentUser();
-                console.log("User created successfully: ", currentUser);
+                await login(email, password)
                 setIsLoading(false)
+                setLoggedIn(true)
                 navigate("/");
             } else { console.log("Error creating account"); }
         } catch (error) {
@@ -72,7 +75,7 @@ export default function Signup() {
             >
               {isLoading ? "Signing up..." : "Signup"}
             </button>
-            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+            {error && <p className="text-red-500 text-sm mt-2">{error.message}</p>}
             <p className="text-blue-500 text-sm mt-2 text-center">
               Already have an account? <Link to="/login" className="underline">Login</Link>
             </p>

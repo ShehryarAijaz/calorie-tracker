@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import authService from '../../backend/appwrite/service/auth.service'
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx'
 
 function Login() {
 
@@ -9,6 +10,7 @@ function Login() {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -22,15 +24,9 @@ function Login() {
         }
 
         try {
-            const response = await authService.login(email, password)
-            if (response) {
-                const currentUser = await authService.getCurrentUser();
-                console.log("User logged in successfully: ", currentUser);
-                setIsLoading(false);
-                navigate('/')
-            } else {
-                console.log("Error logging in");
-            }
+          await login(email, password)
+          setIsLoading(false)
+          navigate('/')
         } catch (error) {
             console.log("Error logging in: ", error);
             setError(error.message || "Something went wrong");

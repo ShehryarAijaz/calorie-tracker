@@ -1,28 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import authService from '../../backend/appwrite/service/auth.service'
+import { useAuth } from '../context/AuthContext.jsx'
 
 function Navbar() {
 
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { user, login, logout } = useAuth();
 
-  useEffect(() => {
-      const fetchUser = async () => {
-          const user = await authService.getCurrentUser();
-          if (user) {
-            setLoggedIn(true);
-          } else {
-            setLoggedIn(false);
-          }
-      }
-      fetchUser();
-  });
-
-  const handleLogout = () => {
-      authService.logout();
-      navigate("/login");
+  const handleLogout = async () => {
+    await logout()
+    navigate("/login");
   }
+
+  const loggedIn = !!user; // !!user converts the user object to a boolean value. If the user is logged in, it will return true. Otherwise it will return false.
 
   return (
     <nav className="bg-white shadow-md px-6 py-3 flex items-center justify-between w-full sticky top-0 z-50">
