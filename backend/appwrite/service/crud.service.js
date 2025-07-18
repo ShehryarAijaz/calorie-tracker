@@ -1,4 +1,4 @@
-import { Client, Account, ID, Databases, Storage } from 'appwrite';
+import { Client, Account, ID, Databases, Storage, Query } from 'appwrite';
 
 export class CrudService {
     client = new Client();
@@ -90,3 +90,7 @@ export class CrudService {
         return null;
     }
 }
+
+const crudService = new CrudService();
+
+export default crudService;

@@ -6,9 +6,12 @@ import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
 import CalorieTrack from "./components/CalorieTrack";
 import { Routes, Route } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function App() {
+
+  const [foods, setFoods] = useState([])
+
   return (
     <>
       <div className="min-h-screen">
@@ -17,7 +20,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/add-food" element={<CalorieTrack />} />
+          <Route path="/add-food" element={<CalorieTrack foods={foods} setFoods={setFoods} />} />
           <Route path="/account" element={<Profile />} />
           {/* <Route path="/progress" element={<Progress />} /> */}
         </Routes>

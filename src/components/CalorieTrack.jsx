@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext.jsx";
+import crudService from "../../backend/appwrite/service/crud.service.js";
 import { ID } from "appwrite";
 
-function CalorieTrack() {
+function CalorieTrack({ foods, setFoods }) {
+  const { user } = useAuth();
+  
   const [food, setFood] = useState({
     name: "",
     calories: "",
@@ -12,9 +16,7 @@ function CalorieTrack() {
     isCustom: "",
   });
 
-  const [foods, setFoods] = useState([]);
-
-  const handleAddFood = () => {
+  const handleAddFood = async () => {
     if (
       !food.name ||
       !food.calories ||
@@ -28,7 +30,20 @@ function CalorieTrack() {
       return;
     }
 
-    setFoods([...foods, food]);
+    const response = await crudService.addFood({
+      userId: user.$id,
+      name: food.name,
+      calories: parseInt(food.calories),
+      protein: parseInt(food.protein),
+      carbs: parseInt(food.carbs),
+      fat: parseInt(food.fat),
+      servingSize: String(food.servingSize),
+      isCustom: food.isCustom?.toLowerCase() === "true",
+    })
+    if (response) {
+      setFoods([...foods, response]);
+    }
+
     setFood({
       name: "",
       calories: "",
@@ -40,8 +55,28 @@ function CalorieTrack() {
     });
   };
 
+  useEffect(() => {
+    const getCurrentFoods = async () => {
+      if (!user) return;
+      
+      const response = await crudService.getFoods(user.$id)
+      if (response) {
+        setFoods(response.documents)
+        console.log(response.documents)
+      }
+    }
+    getCurrentFoods()
+  }, [user])
+  
+
+  const loggedIn = !!user;
+
+  if (!loggedIn) {
+    return <div className="min-h-screen mt-10 flex flex-col items-center justify-center text-2xl font-bold">You're not <b className="text-red-500">logged in.</b> <a href="/login" className="text-blue-700 underline hover:text-blue-800 transition duration-300">Login</a> to continue</div>
+  }
+
   return (
-    <div className="mt-10 flex flex-col items-center justify-center">
+    <div className="min-h-screen mt-10 flex flex-col items-center justify-center">
       <h1 className="text-3xl font-extrabold mb-6 text-blue-700 tracking-tight">
         Calorie Tracker
       </h1>
@@ -95,6 +130,7 @@ function CalorieTrack() {
             onChange={(e) => setFood({ ...food, isCustom: e.target.value })}
             className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
           >
+            <option value="">Select</option>
             <option value="true">Yes</option>
             <option value="false">No</option>
           </select>
@@ -116,22 +152,12 @@ function CalorieTrack() {
               <thead>
                 <tr className="bg-blue-100 text-blue-700">
                   <th className="py-3 px-4 text-left font-semibold">Name</th>
-                  <th className="py-3 px-4 text-left font-semibold">
-                    Calories
-                  </th>
-                  <th className="py-3 px-4 text-left font-semibold">
-                    Protein (g)
-                  </th>
-                  <th className="py-3 px-4 text-left font-semibold">
-                    Carbs (g)
-                  </th>
+                  <th className="py-3 px-4 text-left font-semibold">Calories</th>
+                  <th className="py-3 px-4 text-left font-semibold">Protein (g)</th>
+                  <th className="py-3 px-4 text-left font-semibold">Carbs (g)</th>
                   <th className="py-3 px-4 text-left font-semibold">Fat (g)</th>
-                  <th className="py-3 px-4 text-left font-semibold">
-                    Serving Size (g)
-                  </th>
-                  <th className="py-3 px-4 text-left font-semibold">
-                    Is Custom
-                  </th>
+                  <th className="py-3 px-4 text-left font-semibold">Serving Size (g)</th>
+                  <th className="py-3 px-4 text-left font-semibold">Is Custom</th>
                 </tr>
               </thead>
               <tbody>
@@ -146,7 +172,7 @@ function CalorieTrack() {
                     <td className="py-2 px-4">{item.carbs}</td>
                     <td className="py-2 px-4">{item.fat}</td>
                     <td className="py-2 px-4">{item.servingSize}</td>
-                    <td className="py-2 px-4">{item.isCustom}</td>
+                    <td className="py-2 px-4">{item.isCustom ? "Yes" : "No"}</td>
                   </tr>
                 ))}
               </tbody>
