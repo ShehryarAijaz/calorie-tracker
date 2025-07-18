@@ -12,19 +12,11 @@ function Home() {
   };
 
   const handleViewProgress = () => {
-    if (loggedIn) {
-      navigate("/progress");
-    } else {
-      navigate("/login");
-    }
+    navigate("/progress")
   };
 
   const handleAICompanion = () => {
-    if (loggedIn) {
       navigate("/ai-companion")
-    } else {
-      navigate("/login")
-    }
   }
 
   return (

@@ -22,8 +22,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/add-food" element={<CalorieTrack foods={foods} setFoods={setFoods} />} />
-          <Route path="/account" element={<Profile />} />
-          <Route path="/ai-companion" element={<TalkToAI />} />
+          <Route path="/account" element={<Profile foods={foods} setFoods={setFoods} />} />
+          <Route path="/ai-companion" element={<TalkToAI foods={foods} setFoods={setFoods} />} />
           {/* <Route path="/progress" element={<Progress />} /> */}
         </Routes>
       </div>
