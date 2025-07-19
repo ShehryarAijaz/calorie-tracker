@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+/* Dark mode styles using CSS custom properties */
+:root {
+  --color-scheme: light;
+}
+
+[style*="--color-scheme: dark"] {
+  color-scheme: dark;
+}
+
+[style*="--color-scheme: dark"] body {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+[style*="--color-scheme: dark"] nav {
+  background-color: #2d2d2d !important;
+  color: #ffffff;
+}
+
+[style*="--color-scheme: dark"] .bg-white {
+  background-color: #2d2d2d !important;
+}
+
+[style*="--color-scheme: dark"] .text-gray-800 {
+  color: #ffffff !important;
+}

@@ -1,11 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
+import { useTheme } from '../context/ThemeContext.jsx'
 
 function Navbar() {
 
   const navigate = useNavigate();
   const { user, login, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
     await logout()
@@ -79,6 +81,12 @@ function Navbar() {
             Signup
           </button>
         )}
+        <button
+          className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded transition"
+          onClick={toggleTheme}
+        >
+          {theme === "light" ? "Dark Mode" : "Light Mode"}
+        </button>
       </div>
     </nav>
   )
