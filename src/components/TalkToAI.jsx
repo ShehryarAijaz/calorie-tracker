@@ -49,6 +49,16 @@ function TalkToAI({ foods, setFoods }) {
       const assisstantMessage = { role: "assistant", content: response.text }
       
       setMessages(prev => [...prev, userMessage, assisstantMessage])
+
+      const postResponse = await crudService.postMessages({
+        userId: user.$id,
+        userMessages: String(userMessage.content),
+        assisstantMessages: String(assisstantMessage.content)
+      })
+      if (postResponse) {
+        console.log("Messages posted successfully")
+      }
+      
       
       setContextAttached(false)
     }

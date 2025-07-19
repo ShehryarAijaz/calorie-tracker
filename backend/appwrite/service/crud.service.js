@@ -19,7 +19,7 @@ export class CrudService {
         try {
             return await this.databases.createDocument(
                 import.meta.env.VITE_APPWRITE_DATABASE_ID,
-                import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+                import.meta.env.VITE_APPWRITE_FOOD_COLLECTION_ID,
                 ID.unique(),
                 {
                     userId,
@@ -38,12 +38,29 @@ export class CrudService {
         return null;
     }
 
+    async postMessages({userId, userMessages, assisstantMessages}) {
+        try {
+            return await this.databases.createDocument(
+                import.meta.env.VITE_APPWRITE_DATABASE_ID,
+                import.meta.env.VITE_APPWRITE_AI_COLLECTION_ID,
+                ID.unique(),
+                {
+                    userId,
+                    userMessages,
+                    assisstantMessages
+                }
+            )
+        } catch (error) {
+            console.log("Error posting messages", error)
+        }
+    }
+
     // This is a function that is used to update a food for a user. It takes a userId and an object with the food details as parameters and returns a promise if the food is updated successfully. If the food is not updated successfully, it will return null.
     async updateFood(userId, { name, calories, protein, carbs, fat, servingSize, isCustom }) {
         try {
             return await this.databases.updateDocument(
                 import.meta.env.VITE_APPWRITE_DATABASE_ID,
-                import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+                import.meta.env.VITE_APPWRITE_FOOD_COLLECTION_ID,
                 userId,
                 {
                     name,
@@ -66,7 +83,7 @@ export class CrudService {
         try {
             await this.databases.deleteDocument(
                 import.meta.env.VITE_APPWRITE_DATABASE_ID,
-                import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+                import.meta.env.VITE_APPWRITE_FOOD_COLLECTION_ID,
                 userId
             )
             return true;
@@ -81,7 +98,7 @@ export class CrudService {
         try {
             return await this.databases.listDocuments(
                 import.meta.env.VITE_APPWRITE_DATABASE_ID,
-                import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+                import.meta.env.VITE_APPWRITE_FOOD_COLLECTION_ID,
                 [Query.equal("userId", userId)]
             )
         } catch (error) {
@@ -89,6 +106,8 @@ export class CrudService {
         }
         return null;
     }
+
+    
 }
 
 const crudService = new CrudService();
