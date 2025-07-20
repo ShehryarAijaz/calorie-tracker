@@ -136,6 +136,12 @@ function TalkToAI({ foods, setFoods }) {
             Send
           </button>
         </form>
+        </div>
+        <div className='mt-2 bg-white rounded-2xl p-4 w-auto flex flex-col items-center gap-2'>
+          <h2 className="text-2xl font-bold hover:text-blue-700 transition duration-300">Context</h2>
+          {foods.map((food) => (
+            <ol key={food.name}>{food.name} - {food.calories} calories, {food.protein}g protein, {food.carbs}g carbs, {food.fat}g fat, Custom entry? - {food.isCustom ? "Yes" : "No"}</ol>
+          ))}
       </div>
     </div>
   )
